@@ -1,66 +1,301 @@
+const seasons = {
+  1: [
+    { q:"С чего начинается сериал?", a:["С убийства семьи Джейна","С интервью Патрика на ТВ","С ареста Красного Джона","С переезда в Сакраменто"], correct:1 },
+    { q:"Кем работал Джейн до CBI?", a:["Полицейским","Психологом","Лжеэкстрасенсом","Журналистом"], correct:2 },
+    { q:"Как зовут начальницу команды?", a:["Тереза Лисбон","Грейс Ван Пелт","Кристина Фрай","Эрика Флинн"], correct:0 },
+    { q:"Кто ведёт допросы с Джейном чаще всего?", a:["Ригсби","Чо","Лисбон","Ван Пелт"], correct:2 },
+    { q:"Как зовут сурового агента-азиата?", a:["Ригсби","Чо","Боско","Харди"], correct:1 },
+    { q:"Что Джейн использует для расслабления людей?", a:["Кофе","Чай","Сигареты","Музыку"], correct:1 },
+    { q:"Какое прозвище у убийцы семьи Джейна?", a:["Тигр","Красный Джон","Мистер Рэд","Джон Смит"], correct:1 },
+    { q:"Где работает команда в 1 сезоне?", a:["В ФБР","В CBI","В полиции","В частном агентстве"], correct:1 },
+    { q:"Что Джейн делает в первой серии?", a:["Признаётся в убийстве на ТВ","Убегает","Поёт","Молчит"], correct:0 },
+    { q:"Как относится Лисбон к Джейну сначала?", a:["Обожает","Терпит","Ненавидит","Не замечает"], correct:1 },
+    { q:"Кто из команды первым принимает Джейна?", a:["Лисбон","Чо","Ригсби","Ван Пелт"], correct:3 },
+    { q:"Какое хобби у Джейна?", a:["Шахматы","Рисование","Чайники","Гитара"], correct:2 },
+    { q:"Кто часто скептичен к методам Джейна?", a:["Чо","Ван Пелт","Ригсби","Лисбон"], correct:0 },
+    { q:"Кто директор CBI в 1 сезоне?", a:["Гейл Бертрам","Вирджил Миннелли","Деннис Эбботт","Сэм Боско"], correct:1 },
+    { q:"Что Джейн иногда оставляет на месте преступления?", a:["Записки","Смайлик","Цветы","Ничего"], correct:1 },
+    { q:"Кто помогает Джейну с делами в CBI?", a:["Только Лисбон","Вся команда","Только Чо","Никто"], correct:1 },
+    { q:"Что обычно делает Джейн, чтобы раскрыть дело?", a:["Гипноз","Играет роль","Пьёт чай","Молчит"], correct:1 },
+    { q:"Как зовут мужа Ван Пелт в 1 сезоне?", a:["Крейг","Оскар","Джон","Марк"], correct:1 },
+    { q:"Кто такой Брэд Харди?", a:["Агент CBI","Прокурор","Напарник Лисбон","Директор"], correct:1 },
+    { q:"Чем заканчивается 1 сезон?", a:["Джейн уходит","Красный Джон убивает знакомого","Лисбон увольняют","Команду закрывают"], correct:1 }
+  ],
+  2: [
+    { q:"Кто появляется в начале 2 сезона?", a:["Кристина Фрай","Лорелея","Эрика Флинн","Сэм Боско"], correct:0 },
+    { q:"Какое стихотворение связано с Красным Джоном?", a:["«Ворон»","«Тигр, тигр»","«Ода»","«Тайна»"], correct:1 },
+    { q:"Кто погибает в конце 2 сезона?", a:["Ригсби","Чо","Сэм Боско","Ван Пелт"], correct:2 },
+    { q:"Кем был Сэм Боско?", a:["Агентом CBI","Агентом ФБР","Детективом полиции","Адвокатом"], correct:0 },
+    { q:"Что Джейн находит в доме Красного Джона?", a:["Фото","Письмо","Смайлик","Нож"], correct:2 },
+    { q:"Кто такая Кристина Фрай?", a:["Адвокат","Агент ФБР","Журналистка","Судья"], correct:1 },
+    { q:"Что связывает Кристину Фрай с Джейном?", a:["Роман","Общий враг","Дружба","Работа"], correct:0 },
+    { q:"Как зовут патологоанатома?", a:["Бретт Партридж","Ким Фишер","Грейс","Эрика"], correct:0 },
+    { q:"Кто помогает Джейну с делом Красного Джона?", a:["Боско","Лисбон","Миннелли","ФБР"], correct:0 },
+    { q:"Что Джейн делает на похоронах Боско?", a:["Молчит","Произносит речь","Уходит","Поёт"], correct:1 },
+    { q:"Кто такой Вирджил Миннелли?", a:["Директор CBI","Агент","Прокурор","Судья"], correct:0 },
+    { q:"Как Джейн относится к оружию?", a:["Любит","Не носит","Коллекционирует","Продаёт"], correct:1 },
+    { q:"Кто из команды больше всех скептичен?", a:["Чо","Ригсби","Ван Пелт","Лисбон"], correct:0 },
+    { q:"Что делает Джейн, чтобы поймать преступника?", a:["Стреляет","Играет роль","Убегает","Звонит в ФБР"], correct:1 },
+    { q:"Кто из команды влюбляется в 2 сезоне?", a:["Ригсби","Чо","Лисбон","Джейн"], correct:0 },
+    { q:"Что происходит с Миннелли?", a:["Уходит","Умирает","Его повышают","Арестовывают"], correct:1 },
+    { q:"Как Джейн называет Красного Джона?", a:["Мистер Рэд","Красный","Джон","Он"], correct:0 },
+    { q:"Кто больше всего пострадал от Красного Джона?", a:["Джейн","Лисбон","Чо","Ригсби"], correct:0 },
+    { q:"Что важно для Джейна в расследовании?", a:["Улики","Психология","Оружие","Деньги"], correct:1 },
+    { q:"Чем заканчивается 2 сезон?", a:["Смертью Боско","Свадьбой","Арестом Джейна","Переездом"], correct:0 }
+  ],
+  3: [
+    { q:"Кто такая Лорелея Мартинс?", a:["Агент","Подруга Джейна, связанная с Красным Джоном","Сестра Лисбон","Судья"], correct:1 },
+    { q:"Как называется эпизод встречи с Красным Джоном?", a:["Red Moon","Red John","Red Sky","Red Dawn"], correct:1 },
+    { q:"Что оказывается с Красным Джоном в 3 сезоне?", a:["Он убит","Подставной","Арестован","Сбежал"], correct:1 },
+    { q:"Кто уходит из команды временно в 3 сезоне?", a:["Ригсби","Ван Пелт","Джейн","Чо"], correct:2 },
+    { q:"Какой предмет связан с Красным Джоном?", a:["Кольцо","Смайлик","Нож","Записка"], correct:1 },
+    { q:"Что происходит с Лисбон в конце 3 сезона?", a:["Увольнение","Больница","Понижение","Перевод"], correct:1 },
+    { q:"Кто из команды женится в 3 сезоне?", a:["Ригсби","Чо","Ван Пелт","Лисбон"], correct:2 },
+    { q:"Кто муж Ван Пелт?", a:["Крейг","Оскар","Джон","Марк"], correct:1 },
+    { q:"Как относится Джейн к Лорелее?", a:["Доверяет","Подозревает","Ненавидит","Не знает"], correct:1 },
+    { q:"Кто помогает Джейну в расследовании Красного Джона?", a:["Лорелея","Кристина","Боско","Миннелли"], correct:0 },
+    { q:"Что Джейн делает с подозреваемым?", a:["Убивает","Отпускает","Арестовывает","Шантажирует"], correct:1 },
+    { q:"Кто директор CBI в 3 сезоне?", a:["Миннелли","Бертрам","Эбботт","Харди"], correct:0 },
+    { q:"Как Джейн называет свой метод?", a:["Интуиция","Наблюдение","Психология","Магия"], correct:1 },
+    { q:"Кто из команды самый преданный Джейну?", a:["Лисбон","Чо","Ригсби","Ван Пелт"], correct:0 },
+    { q:"Что важно для Джейна в людях?", a:["Внешность","Детали","Деньги","Статус"], correct:1 },
+    { q:"Кто помогает Джейну сбежать?", a:["Лисбон","Никто","ФБР","Друг"], correct:0 },
+    { q:"Как Джейн относится к правилам?", a:["Соблюдает","Нарушает","Уважает","Боится"], correct:1 },
+    { q:"Кто из команды ранен в 3 сезоне?", a:["Ригсби","Чо","Лисбон","Ван Пелт"], correct:2 },
+    { q:"Что Джейн говорит о Красном Джоне?", a:["Он близко","Он далеко","Он мёртв","Он женщина"], correct:0 },
+    { q:"Чем заканчивается 3 сезон?", a:["Ранением Лисбон","Свадьбой","Арестом","Переездом"], correct:0 }
+  ],
+  4: [
+    { q:"Что такое «Багровый котелок»?", a:["Кодовое имя","Список подозреваемых","Оружие","Псевдоним"], correct:1 },
+    { q:"Сколько подозреваемых в списке?", a:["5","6","7","8"], correct:2 },
+    { q:"Кто в списке подозреваемых?", a:["Только мужчины","Только полицейские","Разные люди","Только ФБР"], correct:2 },
+    { q:"Что Джейн делает с подозреваемым в конце сезона?", a:["Убивает","Отпускает","Арестовывает","Шантажирует"], correct:0 },
+    { q:"Кто помогает Джейну в 4 сезоне?", a:["Лорелея","Кристина","Боско","Миннелли"], correct:0 },
+    { q:"Что с Лисбон в финале 4 сезона?", a:["Повышение","Арест","Увольнение","Ранение"], correct:1 },
+    { q:"Куда сбегает Джейн?", a:["Мексика","Остров","Европа","Канада"], correct:0 },
+    { q:"Кто директор CBI в 4 сезоне?", a:["Миннелли","Бертрам","Эбботт","Харди"], correct:1 },
+    { q:"Что важно для Джейна в списке?", a:["Имена","Порядок","Мотивы","Возраст"], correct:2 },
+    { q:"Кто из команды помогает Джейну?", a:["Все","Никто","Только Лисбон","Только Чо"], correct:0 },
+    { q:"Как Джейн относится к списку?", a:["Игнорирует","Изучает","Сжигает","Продаёт"], correct:1 },
+    { q:"Кто из подозреваемых вызывает больше всего подозрений?", a:["Бертран","Стайлз","Смит","Харди"], correct:1 },
+    { q:"Что Джейн делает после убийства?", a:["Сдаётся","Сбегает","Молчит","Звонит в ФБР"], correct:1 },
+    { q:"Кто помогает Джейну сбежать?", a:["Лисбон","Никто","ФБР","Друг"], correct:1 },
+    { q:"Как Джейн относится к мести?", a:["Отказывается","Готов","Боится","Не думает"], correct:1 },
+    { q:"Кто из команды пострадал от действий Джейна?", a:["Ригсби","Чо","Лисбон","Ван Пелт"], correct:2 },
+    { q:"Что Джейн оставляет Лисбон?", a:["Письмо","Цветы","Ничего","Деньги"], correct:0 },
+    { q:"Как Джейн относится к Красному Джону?", a:["Боится","Ненавидит","Уважает","Забыл"], correct:1 },
+    { q:"Кто из подозреваемых в итоге невиновен?", a:["Все","Некоторые","Никто","Один"], correct:1 },
+    { q:"Чем заканчивается 4 сезон?", a:["Побегом Джейна","Свадьбой","Арестом","Смертью"], correct:0 }
+  ],
+  5: [
+    { q:"Где скрывается Джейн в начале 5 сезона?", a:["Малайзия","Мексика","Багамы","Европа"], correct:1 },
+    { q:"Сколько подозреваемых в списке?", a:["5","6","7","8"], correct:2 },
+    { q:"Кто из списка оказывается Красным Джоном?", a:["Бертран","МакАллистер","Смит","Стайлз"], correct:3 },
+    { q:"Как зовут Красного Джона?", a:["Томас МакАллистер","Джон Смит","Бретт Стайлз","Рэй Хэффнер"], correct:0 },
+    { q:"Что Джейн узнаёт о Красном Джоне?", a:["Он мёртв","Он в списке ФБР","Он один из семи","Он женщина"], correct:2 },
+    { q:"Что с Лисбон в конце 5 сезона?", a:["Уходит","Повышение","Перевод в ФБР","Уезжает"], correct:2 },
+    { q:"Кто возвращается в команду в 5 сезоне?", a:["Джейн","Боско","Миннелли","Фрай"], correct:0 },
+    { q:"Как Джейн относится к списку?", a:["Игнорирует","Изучает","Сжигает","Продаёт"], correct:1 },
+    { q:"Кто помогает Джейну с расследованием?", a:["ФБР","Лисбон","Чо","Все"], correct:3 },
+    { q:"Как Джейн находит подозреваемых?", a:["Случайно","Через связи","Через ФБР","Через интернет"], correct:1 },
+    { q:"Что важно для Джейна в деле?", a:["Улики","Детали","Оружие","Деньги"], correct:1 },
+    { q:"Кто из подозреваемых самый опасный?", a:["Стайлз","МакАллистер","Бертран","Смит"], correct:0 },
+    { q:"Что Джейн делает с подозреваемым?", a:["Убивает","Отпускает","Арестовывает","Шантажирует"], correct:1 },
+    { q:"Как относится Лисбон к Джейну в 5 сезоне?", a:["Ненавидит","Доверяет","Боится","Игнорирует"], correct:1 },
+    { q:"Кто из команды уходит в 5 сезоне?", a:["Ригсби","Чо","Лисбон","Никто"], correct:2 },
+    { q:"Что Джейн обещает Лисбон?", a:["Защиту","Деньги","Ничего","Помощь"], correct:0 },
+    { q:"Кто из подозреваемых работает в полиции?", a:["МакАллистер","Стайлз","Бертран","Смит"], correct:0 },
+    { q:"Как Джейн относится к мести?", a:["Отказывается","Готов","Боится","Не думает"], correct:1 },
+    { q:"Что Джейн находит в конце сезона?", a:["Смайлик","Письмо","Нож","Фото"], correct:0 },
+    { q:"Чем заканчивается 5 сезон?", a:["Переводом Лисбон","Свадьбой","Арестом","Смертью"], correct:0 }
+  ],
+  6: [
+    { q:"Как Джейн убивает Красного Джона?", a:["Стреляет","Душит","Ножом","Ядом"], correct:1 },
+    { q:"Сколько лет проходит после убийства?", a:["1","2","3","5"], correct:1 },
+    { q:"Куда переезжает команда?", a:["Лос-Анджелес","Остин","Нью-Йорк","Чикаго"], correct:1 },
+    { q:"Кто директор ФБР в Остине?", a:["Эбботт","Бертрам","Чо","Ригсби"], correct:0 },
+    { q:"Что Джейн делает после убийства?", a:["Работает в CBI","Уезжает на остров","Работает с ФБР","Уходит на пенсию"], correct:1 },
+    { q:"Как зовут нового агента ФБР?", a:["Мишель Вега","Ким Фишер","Эрика Флинн","Кристина Фрай"], correct:0 },
+    { q:"Кто влюбляется в Ригсби?", a:["Вега","Фишер","Флинн","Фрай"], correct:0 },
+    { q:"Где работает команда в 6 сезоне?", a:["CBI","ФБР","Полиция","Частное агентство"], correct:1 },
+    { q:"Как Джейн относится к работе в ФБР?", a:["Рад","Скептичен","Ненавидит","Игнорирует"], correct:1 },
+    { q:"Кто из команды остаётся с Джейном?", a:["Все","Никто","Только Чо","Только Лисбон"], correct:0 },
+    { q:"Что важно для Джейна в новом городе?", a:["Деньги","Свобода","Власть","Статус"], correct:1 },
+    { q:"Как Джейн относится к Эбботту?", a:["Дружелюбно","Скептично","Враждебно","Никак"], correct:1 },
+    { q:"Кто из команды получает повышение?", a:["Ригсби","Чо","Лисбон","Ван Пелт"], correct:2 },
+    { q:"Что Джейн делает для ФБР?", a:["Стреляет","Помогает расследованиям","Пишет отчёты","Молчит"], correct:1 },
+    { q:"Как относится Лисбон к Джейну в 6 сезоне?", a:["Ненавидит","Доверяет","Боится","Игнорирует"], correct:1 },
+    { q:"Кто главный антагонист 6 сезона?", a:["Красный Джон","Лазарь","Оззи","Мистер Икс"], correct:1 },
+    { q:"Что Джейн делает в свободное время?", a:["Читает","Рыбачит","Играет","Молчит"], correct:1 },
+    { q:"Кто из команды уходит в 6 сезоне?", a:["Ригсби","Чо","Ван Пелт","Лисбон"], correct:2 },
+    { q:"Как Джейн относится к прошлому?", a:["Забыл","Помнит","Игнорирует","Боится"], correct:1 },
+    { q:"Чем заканчивается 6 сезон?", a:["Смертью Красного Джона","Свадьбой","Арестом","Переездом"], correct:0 }
+  ],
+  7: [
+    { q:"Где происходит действие 7 сезона?", a:["Сакраменто","Остин","Лос-Анджелес","Нью-Йорк"], correct:1 },
+    { q:"Что происходит в отношениях Джейна и Лисбон?", a:["Ссора","Роман","Расставание","Ничего"], correct:1 },
+    { q:"Кто главный антагонист 7 сезона?", a:["Красный Джон","Лазарь","Оззи","Мистер Икс"], correct:1 },
+    { q:"Чем заканчивается сериал?", a:["Джейн уезжает","Свадьбой Джейна и Лисбон","Смертью Джейна","Арестом Лисбон"], correct:1 },
+    { q:"Что Джейн делает в финальной серии?", a:["Убивает врага","Признаётся Лисбон в любви","Уезжает навсегда","Уходит из ФБР"], correct:1 },
+    { q:"Сколько всего сезонов в сериале?", a:["5","6","7","8"], correct:2 },
+    { q:"Кто из команды влюбляется в 7 сезоне?", a:["Ригсби","Чо","Лисбон и Джейн","Ван Пелт"], correct:2 },
+    { q:"Как относятся к Джейну в ФБР?", a:["Не доверяют","Доверяют","Боятся","Игнорируют"], correct:0 },
+    { q:"Кто помогает Джейну и Лисбон?", a:["Чо","Ригсби","Ван Пелт","Все"], correct:3 },
+    { q:"Что важно для Джейна в финале?", a:["Месть","Любовь","Работа","Свобода"], correct:1 },
+    { q:"Кто директор ФБР в 7 сезоне?", a:["Эбботт","Бертрам","Чо","Ригсби"], correct:0 },
+    { q:"Куда уезжают Джейн и Лисбон?", a:["В Остин","В Европу","На остров","В Нью-Йорк"], correct:2 },
+    { q:"Как относится Джейн к Лисбон в финале?", a:["Как к коллеге","Как к другу","Как к любимой","Как к начальнику"], correct:2 },
+    { q:"Что Джейн делает с прошлым?", a:["Забывает","Отпускает","Мстит","Игнорирует"], correct:1 },
+    { q:"Кто остаётся с Джейном в финале?", a:["Чо","Ригсби","Лисбон","Никто"], correct:2 },
+    { q:"Как заканчивается сериал?", a:["Трагедией","Хэппи-эндом","Открытым финалом","Смертью"], correct:1 },
+    { q:"Кто играет Патрика Джейна?", a:["Саймон Бейкер","Робин Танни","Тим Канг","Оуайн Йомен"], correct:0 },
+    { q:"Кто играет Терезу Лисбон?", a:["Аманда Ригетти","Робин Танни","Кимбалл Чо","Грейс Ван Пелт"], correct:1 },
+    { q:"Кто играет Кимбалла Чо?", a:["Тим Канг","Оуайн Йомен","Саймон Бейкер","Ригсби"], correct:0 },
+    { q:"Сколько серий примерно в сериале?", a:["~100","~150","~200","~250"], correct:1 }
+  ]
+};
 
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif; }
-body {
-  min-height:100vh;
-  background: radial-gradient(circle at top, #1a1a1a 0%, #0a0a0a 100%);
-  color:#e0e0e0; display:flex; justify-content:center; align-items:center; padding:20px;
+// === DOM ===
+const menuScreen = document.getElementById('menu');
+const quizScreen = document.getElementById('quiz');
+const resultScreen = document.getElementById('result');
+const seasonList = document.getElementById('season-list');
+
+const seasonNumEl = document.getElementById('season-num');
+const qNow = document.getElementById('q-now');
+const qTotal = document.getElementById('q-total');
+const questionEl = document.getElementById('question');
+const answersEl = document.getElementById('answers');
+const feedbackEl = document.getElementById('feedback');
+const fillEl = document.getElementById('fill');
+const nextBtn = document.getElementById('next');
+
+const rSeason = document.getElementById('r-season');
+const rScore = document.getElementById('r-score');
+const rMax = document.getElementById('r-max');
+const rMsg = document.getElementById('r-msg');
+
+// === Состояние ===
+let currentSeason = 1;
+let currentIndex = 0;
+let score = 0;
+
+// === Создаём кнопки сезонов ===
+for (let i = 1; i <= 7; i++) {
+  const btn = document.createElement('div');
+  btn.className = 'season-btn';
+  btn.innerHTML = '<span class="num">' + i + '</span><span class="lbl">Сезон ' + i + '</span>';
+  btn.addEventListener('click', function() { startSeason(i); });
+  seasonList.appendChild(btn);
 }
-.container {
-  width:100%; max-width:740px; background:rgba(20,20,20,0.95);
-  border:1px solid #8b0000; border-radius:12px; padding:30px;
-  box-shadow:0 0 40px rgba(139,0,0,0.3);
+
+// === Показать экран ===
+function showScreen(screen) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  screen.classList.add('active');
 }
-header { text-align:center; margin-bottom:25px; }
-h1 { color:#d32f2f; font-size:2.2rem; letter-spacing:2px; }
-.subtitle { color:#888; font-style:italic; margin-top:5px; }
-.screen { display:none; }
-.screen.active { display:block; animation:fade .4s ease; }
-@keyframes fade { from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-.menu-text { text-align:center; color:#bbb; margin-bottom:20px; }
-.season-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; }
-.season-btn {
-  background:#1e1e1e; border:1px solid #333; border-radius:10px;
-  padding:22px 10px; text-align:center; cursor:pointer; transition:.2s; color:#ddd;
+
+// === Старт сезона ===
+function startSeason(num) {
+  currentSeason = num;
+  currentIndex = 0;
+  score = 0;
+  showScreen(quizScreen);
+  loadQuestion();
 }
-.season-btn:hover {
-  background:#2a2a2a; border-color:#8b0000; transform:translateY(-3px);
-  box-shadow:0 5px 20px rgba(139,0,0,.4);
+
+// === Загрузка вопроса ===
+function loadQuestion() {
+  const list = seasons[currentSeason];
+  const q = list[currentIndex];
+
+  seasonNumEl.textContent = currentSeason;
+  qNow.textContent = currentIndex + 1;
+  qTotal.textContent = list.length;
+  questionEl.textContent = q.q;
+
+  feedbackEl.textContent = '';
+  feedbackEl.classList.remove('correct');
+  nextBtn.classList.add('hidden');
+  answersEl.innerHTML = '';
+
+  fillEl.style.width = (currentIndex / list.length) * 100 + '%';
+
+  q.a.forEach(function(text, i) {
+    const btn = document.createElement('button');
+    btn.className = 'answer';
+    btn.textContent = text;
+    btn.addEventListener('click', function() { selectAnswer(i, btn); });
+    answersEl.appendChild(btn);
+  });
 }
-.season-btn .num { font-size:1.9rem; color:#d32f2f; font-weight:bold; display:block; }
-.season-btn .lbl { font-size:.85rem; color:#aaa; margin-top:6px; }
-.top { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
-.badge {
-  background:#8b0000; color:#fff; padding:6px 16px; border-radius:20px;
-  font-size:.9rem; letter-spacing:1px; text-transform:uppercase;
+
+// === Выбор ответа ===
+function selectAnswer(index, btn) {
+  const list = seasons[currentSeason];
+  const q = list[currentIndex];
+  const buttons = answersEl.querySelectorAll('.answer');
+  buttons.forEach(function(b) { b.disabled = true; });
+
+  if (index === q.correct) {
+    btn.classList.add('correct');
+    score++;
+    feedbackEl.textContent = '✅ Правильно!';
+    feedbackEl.classList.add('correct');
+  } else {
+    btn.classList.add('wrong');
+    buttons[q.correct].classList.add('correct');
+    feedbackEl.textContent = '❌ Неправильно. Правильный ответ: ' + q.a[q.correct];
+    feedbackEl.classList.remove('correct');
+  }
+
+  fillEl.style.width = ((currentIndex + 1) / list.length) * 100 + '%';
+  nextBtn.classList.remove('hidden');
 }
-.back {
-  width:auto; background:transparent; border:1px solid #444; color:#bbb;
-  padding:6px 12px; font-size:.85rem; border-radius:6px; cursor:pointer; transition:.2s;
+
+// === Следующий вопрос ===
+function goNext() {
+  const list = seasons[currentSeason];
+  currentIndex++;
+  if (currentIndex < list.length) {
+    loadQuestion();
+  } else {
+    showResult();
+  }
 }
-.back:hover { background:#2a2a2a; border-color:#8b0000; }
-.bar { width:100%; height:6px; background:#2a2a2a; border-radius:3px; overflow:hidden; margin-bottom:15px; }
-#fill { height:100%; width:0; background:linear-gradient(90deg,#8b0000,#d32f2f); transition:.4s; }
-.counter { color:#888; font-size:.9rem; margin-bottom:10px; }
-#question { font-size:1.2rem; margin-bottom:20px; line-height:1.4; }
-.answers { display:flex; flex-direction:column; gap:10px; }
-.answer {
-  background:#1e1e1e; border:1px solid #333; color:#ddd; padding:14px;
-  border-radius:8px; text-align:left; font-size:1rem; cursor:pointer; transition:.2s; width:100%;
+
+// === Результат ===
+function showResult() {
+  const list = seasons[currentSeason];
+  const max = list.length;
+
+  rSeason.textContent = currentSeason;
+  rScore.textContent = score;
+  rMax.textContent = max;
+
+  const percent = (score / max) * 100;
+  let msg = '';
+  if (percent === 100) msg = '🏆 Идеально! Ни одного промаха.';
+  else if (percent >= 80) msg = '🎩 Отлично! Патрик Джейн гордился бы тобой.';
+  else if (percent >= 60) msg = '🕵️ Хорошо! Ты внимательно смотрел сериал.';
+  else if (percent >= 40) msg = '📺 Средне. Пора пересмотреть пару серий.';
+  else msg = '😅 Слабо. Красный Джон был бы разочарован.';
+
+  rMsg.textContent = msg;
+  showScreen(resultScreen);
 }
-.answer:hover:not(:disabled) { background:#2a2a2a; border-color:#8b0000; }
-.answer.correct { background:#1b5e20; border-color:#4caf50; color:#fff; }
-.answer.wrong { background:#5d0000; border-color:#d32f2f; color:#fff; }
-.feedback { margin-top:15px; min-height:24px; font-weight:bold; color:#d32f2f; }
-.feedback.correct { color:#4caf50; }
-.hidden { display:none; }
-button {
-  width:100%; padding:14px; background:#8b0000; color:#fff; border:none;
-  border-radius:8px; font-size:1.05rem; cursor:pointer; letter-spacing:1px;
-  transition:.2s; margin-top:10px;
-}
-button:hover:not(:disabled) {
-  background:#b71c1c; transform:translateY(-2px); box-shadow:0 5px 20px rgba(183,28,28,.4);
-}
-.score { font-size:1.5rem; text-align:center; margin:20px 0; color:#d32f2f; }
-#r-msg { text-align:center; color:#bbb; margin-bottom:20px; line-height:1.5; }
-@media(max-width:500px){ .season-list{ grid-template-columns:repeat(2,1fr);} h1{font-size:1.7rem;} }
+
+// === Кнопки ===
+document.getElementById('back').addEventListener('click', function() {
+  showScreen(menuScreen);
+});
+
+document.getElementById('next').addEventListener('click', goNext);
+
+document.getElementById('retry').addEventListener('click', function() {
+  startSeason(currentSeason);
+});
+
+document.getElementById('to-menu').addEventListener('click', function() {
+  showScreen(menuScreen);
+});
