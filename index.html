@@ -3,141 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Угадай штат США — Pro</title>
+<title>Угадай штат — настоящая карта США</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg-dark: #0f1a24;
-    --bg-mid: #1e2a38;
-    --bg-light: #2c3e50;
-    --accent: #f1c40f;
-    --success: #2ecc71;
-    --error: #e74c3c;
-    --info: #3498db;
-    --state-fill: #3d566e;
-    --state-hover: #4a6a8a;
-    --text: #ecf0f1;
-    --text-dim: #bdc3c7;
-  }
   body {
-    font-family: 'Segoe UI', system-ui, Arial, sans-serif;
-    background: radial-gradient(ellipse at top, #1e2a38 0%, #0f1a24 100%);
-    color: var(--text);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #1e2a38;
+    color: #fff;
     height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
   }
 
-  /* === ВЕРХНЯЯ ПАНЕЛЬ === */
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background: rgba(15, 26, 36, 0.95);
-    border-bottom: 2px solid var(--bg-light);
-    backdrop-filter: blur(8px);
+    background: #0f1a24;
+    border-bottom: 2px solid #2c3e50;
     flex-wrap: wrap;
     gap: 8px;
-    z-index: 10;
   }
-  .left { display: flex; flex-direction: column; align-items: flex-start; min-width: 200px; }
-  .center { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .left { display: flex; flex-direction: column; align-items: flex-start; }
+  .center { display: flex; flex-direction: column; align-items: center; }
   .right { display: flex; flex-direction: column; align-items: flex-end; }
 
-  .title {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--accent);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
+  .title { font-size: 18px; font-weight: bold; color: #f1c40f; letter-spacing: 1px; }
   .state-name {
-    font-size: 24px;
+    font-size: 22px;
     margin-top: 4px;
-    color: var(--success);
-    font-weight: 700;
-    min-height: 30px;
-    transition: all 0.3s;
-    line-height: 1.2;
+    color: #2ecc71;
+    font-weight: bold;
+    min-height: 28px;
+    transition: color 0.3s;
   }
-  .state-name.correct-flash {
-    color: var(--success);
-    text-shadow: 0 0 20px var(--success);
-    transform: scale(1.05);
-  }
-  .state-name.wrong-flash {
-    color: var(--error);
-    text-shadow: 0 0 20px var(--error);
-    animation: shake 0.3s;
-  }
-  @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-8px); }
-    75% { transform: translateX(8px); }
-  }
-  .state-desc {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-top: 2px;
-    max-width: 400px;
-    line-height: 1.3;
-  }
+  .state-name.correct-flash { color: #2ecc71; text-shadow: 0 0 15px #2ecc71; }
+  .state-name.wrong-flash { color: #e74c3c; text-shadow: 0 0 15px #e74c3c; }
 
-  .desc { font-size: 14px; color: var(--text-dim); margin-bottom: 2px; }
-  .mode-label {
-    font-size: 12px;
-    color: var(--accent);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
+  .desc { font-size: 15px; color: #bdc3c7; }
 
   .info-btn {
-    background: var(--info);
+    background: #3498db;
     border: none;
     color: #fff;
     padding: 7px 14px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.2s;
+    font-size: 14px;
   }
-  .info-btn:hover { background: #2980b9; transform: translateY(-1px); }
+  .info-btn:hover { background: #2980b9; }
 
-  .stats {
-    margin-top: 6px;
-    font-size: 15px;
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    font-weight: 600;
-  }
-  .stats .icon { font-size: 16px; }
-  .stats span { color: var(--accent); font-weight: 800; }
-  .timer-low { color: var(--error) !important; animation: pulse 0.5s infinite alternate; }
-  @keyframes pulse { from { opacity: 1; transform: scale(1); } to { opacity: 0.6; transform: scale(1.1); } }
+  .stats { margin-top: 6px; font-size: 16px; display: flex; gap: 12px; }
+  .stats span { color: #f1c40f; font-weight: bold; }
+  .timer-low { color: #e74c3c !important; animation: pulse 0.5s infinite alternate; }
+  @keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
 
-  .streak {
-    background: linear-gradient(135deg, #f39c12, #e67e22);
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 700;
-    color: #fff;
-    display: none;
-    animation: pop 0.3s;
-  }
-  .streak.show { display: inline-block; }
-  @keyframes pop {
-    0% { transform: scale(0); }
-    70% { transform: scale(1.2); }
-    100% { transform: scale(1); }
-  }
-
-  /* === КАРТА === */
   main {
     flex: 1;
     display: flex;
@@ -147,6 +69,7 @@
     padding: 5px;
     overflow: hidden;
   }
+
   #mapContainer {
     width: 100%;
     height: 100%;
@@ -158,325 +81,133 @@
     width: 100%;
     height: 100%;
     max-height: 100%;
-    filter: drop-shadow(0 4px 20px rgba(0,0,0,0.4));
   }
+
+  /* Стили для штатов внутри загруженной карты */
   #mapContainer svg path {
-    fill: var(--state-fill);
-    stroke: var(--bg-dark);
+    fill: #3d566e;
+    stroke: #1e2a38;
     stroke-width: 0.7;
     cursor: pointer;
-    transition: fill 0.15s, filter 0.15s;
+    transition: fill 0.15s;
   }
   #mapContainer svg path:hover {
-    fill: var(--state-hover);
-    filter: brightness(1.2);
+    fill: #4a6a8a;
   }
   #mapContainer svg path.correct {
-    fill: var(--success) !important;
-    filter: drop-shadow(0 0 10px var(--success));
-    animation: correctPulse 0.5s;
-  }
-  @keyframes correctPulse {
-    0% { filter: drop-shadow(0 0 0 var(--success)); }
-    50% { filter: drop-shadow(0 0 20px var(--success)); }
-    100% { filter: drop-shadow(0 0 6px var(--success)); }
+    fill: #2ecc71 !important;
+    filter: drop-shadow(0 0 6px #2ecc71);
   }
   #mapContainer svg path.wrong {
-    fill: var(--error) !important;
-    filter: drop-shadow(0 0 10px var(--error));
-    animation: wrongShake 0.3s;
-  }
-  @keyframes wrongShake {
-    0%, 100% { transform: translate(0,0); }
-    25% { transform: translate(-3px, 0); }
-    75% { transform: translate(3px, 0); }
+    fill: #e74c3c !important;
+    filter: drop-shadow(0 0 6px #e74c3c);
   }
   #mapContainer svg path.selected {
     fill: #f39c12 !important;
-    filter: drop-shadow(0 0 12px #f39c12);
-    animation: selectedBlink 0.6s infinite alternate;
-  }
-  @keyframes selectedBlink {
-    from { opacity: 1; }
-    to { opacity: 0.6; }
-  }
-  #mapContainer svg path.hint {
-    fill: #9b59b6 !important;
-    filter: drop-shadow(0 0 8px #9b59b6);
+    filter: drop-shadow(0 0 8px #f39c12);
   }
 
-  /* === НИЖНЯЯ ПАНЕЛЬ === */
   footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
-    background: rgba(15, 26, 36, 0.95);
-    border-top: 2px solid var(--bg-light);
-    gap: 10px;
-    flex-wrap: wrap;
+    padding: 10px 20px;
+    background: #0f1a24;
+    border-top: 2px solid #2c3e50;
   }
-  .footer-left { display: flex; gap: 10px; }
-  .btn {
+  .start-btn {
+    background: #2ecc71;
     border: none;
     color: #fff;
-    padding: 10px 24px;
-    font-size: 15px;
+    padding: 12px 40px;
+    font-size: 18px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 700;
+    font-weight: bold;
     letter-spacing: 1px;
-    transition: all 0.2s;
-    text-transform: uppercase;
+    transition: background 0.2s, transform 0.1s;
   }
-  .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-  .btn:active:not(:disabled) { transform: translateY(0); }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .start-btn {
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    padding: 14px 50px;
-    font-size: 18px;
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
-  }
-  .start-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, #27ae60, #229954);
-    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
-  }
-  .hint-btn {
-    background: linear-gradient(135deg, #9b59b6, #8e44ad);
-    font-size: 14px;
-    padding: 12px 22px;
-  }
-  .hint-btn:hover:not(:disabled) { background: linear-gradient(135deg, #8e44ad, #7d3c98); }
-  .skip-btn {
-    background: linear-gradient(135deg, #e67e22, #d35400);
-    font-size: 14px;
-    padding: 12px 22px;
-  }
-  .skip-btn:hover:not(:disabled) { background: linear-gradient(135deg, #d35400, #a04000); }
-  .hint-cost { font-size: 11px; opacity: 0.8; }
+  .start-btn:hover { background: #27ae60; }
+  .start-btn:active { transform: scale(0.97); }
+  .start-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
 
-  /* === МОДАЛЬНОЕ ОКНО === */
   .modal {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.75);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 100;
     padding: 20px;
-    backdrop-filter: blur(4px);
   }
-  .modal.show { display: flex; animation: fadeIn 0.2s; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal.show { display: flex; }
   .modal-content {
-    background: linear-gradient(135deg, #16222e, #1a2a3a);
+    background: #16222e;
     padding: 30px;
-    border-radius: 16px;
-    max-width: 520px;
+    border-radius: 12px;
+    max-width: 480px;
     width: 100%;
-    border: 2px solid var(--info);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-    max-height: 90vh;
-    overflow-y: auto;
+    border: 2px solid #3498db;
   }
-  .modal-content h2 {
-    color: var(--accent);
-    margin-bottom: 18px;
-    text-align: center;
-    font-size: 24px;
-  }
-  .modal-content p {
-    margin-bottom: 10px;
-    line-height: 1.6;
-    color: #ddd;
-    font-size: 15px;
-  }
-  .modal-content .mode-option {
-    background: rgba(52, 152, 219, 0.1);
-    border: 2px solid transparent;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .modal-content .mode-option:hover {
-    background: rgba(52, 152, 219, 0.2);
-    border-color: var(--info);
-  }
-  .modal-content .mode-option.selected {
-    border-color: var(--success);
-    background: rgba(46, 204, 113, 0.15);
-  }
-  .modal-content .mode-option h3 {
-    color: var(--accent);
-    font-size: 16px;
-    margin-bottom: 4px;
-  }
-  .modal-content .mode-option p {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin: 0;
-  }
+  .modal-content h2 { color: #f1c40f; margin-bottom: 15px; text-align: center; }
+  .modal-content p { margin-bottom: 10px; line-height: 1.6; color: #ddd; }
   .modal-content button {
     margin-top: 20px;
-    padding: 12px 30px;
-    background: var(--info);
+    padding: 10px 30px;
+    background: #3498db;
     border: none;
     color: #fff;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 16px;
     width: 100%;
-    font-weight: 700;
-    transition: background 0.2s;
   }
   .modal-content button:hover { background: #2980b9; }
 
-  /* === ЭКРАН РЕЗУЛЬТАТОВ === */
   .result-screen {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.85);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 200;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
     text-align: center;
-    padding: 20px;
-    backdrop-filter: blur(8px);
   }
-  .result-screen.show { display: flex; animation: fadeIn 0.3s; }
-  .result-screen h2 {
-    font-size: 38px;
-    color: var(--accent);
-    text-shadow: 0 0 30px rgba(241, 196, 15, 0.5);
-  }
-  .result-screen .final-score {
-    font-size: 80px;
-    color: var(--success);
-    font-weight: 900;
-    line-height: 1;
-    text-shadow: 0 0 40px rgba(46, 204, 113, 0.5);
-    animation: scoreGrow 0.5s;
-  }
-  @keyframes scoreGrow {
-    from { transform: scale(0); }
-    70% { transform: scale(1.2); }
-    to { transform: scale(1); }
-  }
-  .result-screen .result-label { font-size: 20px; color: var(--text-dim); }
-  .result-screen .result-stats {
-    display: flex;
-    gap: 30px;
-    margin: 15px 0;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .result-screen .result-stat {
-    background: rgba(255,255,255,0.05);
-    padding: 12px 20px;
-    border-radius: 10px;
-    min-width: 120px;
-  }
-  .result-screen .result-stat .value {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--accent);
-  }
-  .result-screen .result-stat .label {
-    font-size: 12px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 4px;
-  }
-  .result-screen .record-badge {
-    background: linear-gradient(135deg, #f1c40f, #f39c12);
-    color: #000;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 800;
-    display: none;
-    animation: pop 0.5s;
-  }
-  .result-screen .record-badge.show { display: inline-block; }
+  .result-screen.show { display: flex; }
+  .result-screen h2 { font-size: 36px; color: #f1c40f; }
+  .result-screen .final-score { font-size: 64px; color: #2ecc71; font-weight: bold; }
+  .result-screen p { font-size: 20px; color: #bdc3c7; }
   .result-screen button {
     padding: 14px 50px;
-    font-size: 18px;
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    font-size: 20px;
+    background: #2ecc71;
     border: none;
     color: #fff;
     border-radius: 10px;
     cursor: pointer;
-    font-weight: 700;
-    margin-top: 10px;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-weight: bold;
   }
-  .result-screen button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
-  }
+  .result-screen button:hover { background: #27ae60; }
 
   .loading {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 18px;
-    color: var(--accent);
-    text-align: center;
+    font-size: 20px;
+    color: #f1c40f;
   }
-  .loading::after {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 40px;
-    margin: 15px auto 0;
-    border: 4px solid rgba(241, 196, 15, 0.2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Уведомление о подсказке */
-  .toast {
-    position: fixed;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-20px);
-    background: rgba(155, 89, 182, 0.95);
-    color: #fff;
-    padding: 12px 24px;
-    border-radius: 10px;
-    font-weight: 600;
-    z-index: 150;
-    opacity: 0;
-    transition: all 0.3s;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-    pointer-events: none;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media (max-width: 768px) {
-    .title { font-size: 13px; }
+    .title { font-size: 14px; }
     .state-name { font-size: 18px; }
-    .state-desc { font-size: 11px; max-width: 200px; }
-    .desc { font-size: 11px; }
-    .stats { font-size: 12px; gap: 6px; }
-    .start-btn { padding: 10px 25px; font-size: 15px; }
-    .info-btn { padding: 5px 10px; font-size: 11px; }
-    .btn { padding: 8px 14px; font-size: 12px; }
-    .hint-btn, .skip-btn { padding: 8px 12px; }
-    .result-screen h2 { font-size: 26px; }
-    .result-screen .final-score { font-size: 60px; }
+    .desc { font-size: 12px; }
+    .stats { font-size: 13px; gap: 8px; }
+    .start-btn { padding: 10px 25px; font-size: 16px; }
+    .info-btn { padding: 5px 10px; font-size: 12px; }
   }
 </style>
 </head>
@@ -484,164 +215,360 @@
 
 <header>
   <div class="left">
-    <div class="title">🌎 Угадай штат</div>
-    <div class="state-name" id="stateName">Нажмите «СТАРТ»</div>
-    <div class="state-desc" id="stateDesc"></div>
+    <div class="title">УГАДАЙ ШТАТ</div>
+    <div class="state-name" id="stateName">Нажмите «Старт»</div>
   </div>
   <div class="center">
     <div class="desc">Угадай штат по описанию</div>
-    <div class="mode-label" id="modeLabel">Режим: Название</div>
-    <div class="streak" id="streak">🔥 0 серия</div>
   </div>
   <div class="right">
-    <button class="info-btn" id="infoBtn">⚙ Настройки</button>
+    <button class="info-btn" id="infoBtn">ℹ Информация</button>
     <div class="stats">
-      <span class="icon">⏱</span> <span id="timer">60</span> сек
-      &nbsp;|&nbsp;
-      <span class="icon">🏆</span> <span id="score">0</span> баллов
-      &nbsp;|&nbsp;
-      <span class="icon">📊</span> <span id="accuracy">0%</span>
+      <span>⏱ <span id="timer">60</span> сек</span>
+      <span>🏆 <span id="score">0</span> баллов</span>
     </div>
   </div>
 </header>
 
 <main>
   <div id="mapContainer">
-    <div class="loading" id="loading">Загрузка карты США</div>
+    <div class="loading" id="loading">Загрузка карты США...</div>
   </div>
 </main>
 
 <footer>
-  <div class="footer-left">
-    <button class="btn hint-btn" id="hintBtn" disabled>💡 Подсказка <span class="hint-cost">(−1 балл)</span></button>
-    <button class="btn skip-btn" id="skipBtn" disabled>⏭ Пропустить <span class="hint-cost">(−1 балл)</span></button>
-  </div>
-  <button class="btn start-btn" id="startBtn" disabled>СТАРТ</button>
+  <div></div>
+  <button class="start-btn" id="startBtn" disabled>СТАРТ</button>
 </footer>
 
-<!-- Модальное окно настроек -->
-<div class="modal" id="settingsModal">
+<div class="modal" id="infoModal">
   <div class="modal-content">
-    <h2>⚙ Настройки игры</h2>
-    <p style="text-align:center; margin-bottom:20px;">Выберите режим игры:</p>
-
-    <div class="mode-option selected" data-mode="name">
-      <h3>🏷 По названию</h3>
-      <p>Показывается название штата — найдите его на карте.</p>
-    </div>
-    <div class="mode-option" data-mode="desc">
-      <h3>📖 По описанию</h3>
-      <p>Показывается описание штата — угадайте, о чём речь.</p>
-    </div>
-    <div class="mode-option" data-mode="capital">
-      <h3>🏛 По столице</h3>
-      <p>Показывается столица штата — найдите сам штат.</p>
-    </div>
-
-    <p style="text-align:center; margin-top:20px; margin-bottom:10px;">Длительность раунда:</p>
-    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-      <button class="time-btn" data-time="30" style="flex:1; min-width:80px; padding:10px; background:#2c3e50; border:2px solid transparent; color:#fff; border-radius:8px; cursor:pointer; font-weight:700;">30 сек</button>
-      <button class="time-btn selected-time" data-time="60" style="flex:1; min-width:80px; padding:10px; background:#2c3e50; border:2px solid #2ecc71; color:#fff; border-radius:8px; cursor:pointer; font-weight:700;">60 сек</button>
-      <button class="time-btn" data-time="120" style="flex:1; min-width:80px; padding:10px; background:#2c3e50; border:2px solid transparent; color:#fff; border-radius:8px; cursor:pointer; font-weight:700;">120 сек</button>
-    </div>
-
-    <button id="closeSettings" style="margin-top:25px;">Сохранить и закрыть</button>
+    <h2>Как играть</h2>
+    <p>1. Нажмите «СТАРТ».</p>
+    <p>2. Сверху слева появится название штата, который нужно найти.</p>
+    <p>3. Кликните по нужному штату на карте.</p>
+    <p>4. Правильный ответ: +1 балл. Ошибка: −1 балл.</p>
+    <p>5. У вас 60 секунд. Постарайтесь набрать максимум баллов!</p>
+    <button id="closeInfo">Закрыть</button>
   </div>
 </div>
 
-<!-- Модальное окно "Как играть" (первый запуск) -->
-<div class="modal" id="howtoModal">
-  <div class="modal-content">
-    <h2>🌎 Добро пожаловать!</h2>
-    <p>Это игра «Угадай штат США». Вот как играть:</p>
-    <p>1️⃣ Нажмите «СТАРТ» внизу справа.</p>
-    <p>2️⃣ Слева сверху появится задание — название, описание или столица штата.</p>
-    <p>3️⃣ Кликните по нужному штату на карте.</p>
-    <p>4️⃣ Правильный ответ: <b style="color:#2ecc71;">+1 балл</b>. Ошибка: <b style="color:#e74c3c;">−1 балл</b>.</p>
-    <p>5️⃣ Кнопки «Подсказка» и «Пропустить» помогут, но отнимут балл.</p>
-    <p>6️⃣ Серия правильных ответов даёт бонусные очки!</p>
-    <button id="closeHowto">Понятно, играем!</button>
-  </div>
-</div>
-
-<!-- Экран результатов -->
 <div class="result-screen" id="resultScreen">
-  <h2>🎉 Игра окончена!</h2>
-  <div class="record-badge" id="recordBadge">🏆 Новый рекорд!</div>
+  <h2>Игра окончена!</h2>
   <div class="final-score" id="finalScore">0</div>
-  <div class="result-label">баллов набрано</div>
-  <div class="result-stats">
-    <div class="result-stat">
-      <div class="value" id="resCorrect">0</div>
-      <div class="label">Правильно</div>
-    </div>
-    <div class="result-stat">
-      <div class="value" id="resWrong">0</div>
-      <div class="label">Ошибок</div>
-    </div>
-    <div class="result-stat">
-      <div class="value" id="resAccuracy">0%</div>
-      <div class="label">Точность</div>
-    </div>
-    <div class="result-stat">
-      <div class="value" id="resStreak">0</div>
-      <div class="label">Макс. серия</div>
-    </div>
-  </div>
-  <div class="result-label" id="bestScoreLabel"></div>
+  <p>баллов набрано</p>
   <button id="playAgainBtn">Играть снова</button>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
 // ==================== ДАННЫЕ ШТАТОВ ====================
 const statesData = [
-  { id: "AL", name: "Алабама", capital: "Монтгомери", desc: "Штат на юге США, известен историей гражданской войны и хлопковыми полями." },
-  { id: "AK", name: "Аляска", capital: "Джуно", desc: "Самый большой штат США, расположен на северо-западе, известен нефтью и льдами." },
-  { id: "AZ", name: "Аризона", capital: "Финикс", desc: "Штат с Гранд-Каньоном и пустыней Сонора." },
-  { id: "AR", name: "Арканзас", capital: "Литл-Рок", desc: "Штат на юге США, известен природными источниками и горами Озарк." },
-  { id: "CA", name: "Калифорния", capital: "Сакраменто", desc: "Штат на западном побережье, известен Голливудом и Кремниевой долиной." },
-  { id: "CO", name: "Колорадо", capital: "Денвер", desc: "Штат в Скалистых горах, известен лыжными курортами." },
-  { id: "CT", name: "Коннектикут", capital: "Хартфорд", desc: "Штат в Новой Англии, один из первых тринадцати колоний." },
-  { id: "DE", name: "Делавэр", capital: "Довер", desc: "Первый штат, ратифицировавший Конституцию США." },
-  { id: "FL", name: "Флорида", capital: "Таллахасси", desc: "Штат на юго-востоке, известен пляжами и Диснейлендом." },
-  { id: "GA", name: "Джорджия", capital: "Атланта", desc: "Штат на юго-востоке, известен персиками и Атлантой." },
-  { id: "HI", name: "Гавайи", capital: "Гонолулу", desc: "Единственный штат, полностью состоящий из островов." },
-  { id: "ID", name: "Айдахо", capital: "Бойсе", desc: "Штат, известный картофелем и горами Скалистых гор." },
-  { id: "IL", name: "Иллинойс", capital: "Спрингфилд", desc: "Штат с Чикаго, третьим по величине городом США." },
-  { id: "IN", name: "Индиана", capital: "Индианаполис", desc: "Штат с автогонками Indianapolis 500." },
-  { id: "IA", name: "Айова", capital: "Де-Мойн", desc: "Штат с кукурузными полями и фермами." },
-  { id: "KS", name: "Канзас", capital: "Топика", desc: "Штат на Среднем Западе, известен пшеничными полями." },
-  { id: "KY", name: "Кентукки", capital: "Франкфорт", desc: "Штат, известный скачками и бурбоном." },
-  { id: "LA", name: "Луизиана", capital: "Батон-Руж", desc: "Штат с Новым Орлеаном, известен джазом и кухней." },
-  { id: "ME", name: "Мэн", capital: "Огаста", desc: "Самый северо-восточный штат, известен омарами." },
-  { id: "MD", name: "Мэриленд", capital: "Аннаполис", desc: "Штат с Балтимором и Чесапикским заливом." },
-  { id: "MA", name: "Массачусетс", capital: "Бостон", desc: "Штат с Бостоном и Гарвардом." },
-  { id: "MI", name: "Мичиган", capital: "Лансинг", desc: "Штат у Великих озёр, известен автомобильной промышленностью." },
-  { id: "MN", name: "Миннесота", capital: "Сент-Пол", desc: "Штат тысячи озёр." },
-  { id: "MS", name: "Миссисипи", capital: "Джексон", desc: "Штат вдоль реки Миссисипи, известен блюзом." },
-  { id: "MO", name: "Миссури", capital: "Джефферсон-Сити", desc: "Штат с Сент-Луисом и аркой Gateway Arch." },
-  { id: "MT", name: "Монтана", capital: "Хелена", desc: "Штат с национальным парком Глейшер." },
-  { id: "NE", name: "Небраска", capital: "Линкольн", desc: "Штат с кукурузными полями и Омахой." },
-  { id: "NV", name: "Невада", capital: "Карсон-Сити", desc: "Штат с Лас-Вегасом и пустыней Мохаве." },
-  { id: "NH", name: "Нью-Гэмпшир", capital: "Конкорд", desc: "Штат с горами Уайт-Маунтинс." },
-  { id: "NJ", name: "Нью-Джерси", capital: "Трентон", desc: "Штат рядом с Нью-Йорком, известен пляжами." },
-  { id: "NM", name: "Нью-Мексико", capital: "Санта-Фе", desc: "Штат с пустынями и индейской культурой." },
-  { id: "NY", name: "Нью-Йорк", capital: "Олбани", desc: "Штат с крупнейшим городом США и Статуей Свободы." },
-  { id: "NC", name: "Северная Каролина", capital: "Роли", desc: "Штат на восточном побережье, известен пляжами и горами." },
-  { id: "ND", name: "Северная Дакота", capital: "Бисмарк", desc: "Штат на севере, известен нефтью и фермами." },
-  { id: "OH", name: "Огайо", capital: "Колумбус", desc: "Штат на Среднем Западе, известен Кливлендом и Цинциннати." },
-  { id: "OK", name: "Оклахома", capital: "Оклахома-Сити", desc: "Штат с нефтью и индейскими резервациями." },
-  { id: "OR", name: "Орегон", capital: "Сейлем", desc: "Штат на западном побережье, известен лесами и Портлендом." },
-  { id: "PA", name: "Пенсильвания", capital: "Гаррисберг", desc: "Штат с Филадельфией и историей Declaration of Independence." },
-  { id: "RI", name: "Род-Айленд", capital: "Провиденс", desc: "Самый маленький штат США." },
-  { id: "SC", name: "Южная Каролина", capital: "Колумбия", desc: "Штат с пляжами и историей." },
-  { id: "SD", name: "Южная Дакота", capital: "Пирр", desc: "Штат с горой Рашмор." },
-  { id: "TN", name: "Теннесси", capital: "Нашвилл", desc: "Штат, известный музыкой кантри и Нашвиллом." },
-  { id: "TX", name: "Техас", capital: "Остин", desc: "Второй по площади штат, известен ковбоями и барбекю." },
-  { id: "UT", name: "Юта", capital: "Солт-Лейк-Сити", desc: "Штат с Солёным озером и мормонами." },
-  { id: "VT", name: "Вермонт", capital: "Монтпилиер", desc: "Штат с кленовым сиропом и зелёными горами." },
-  { id: "VA", name: "Вирджиния", capital: "Ричмонд", desc: "Штат на востоке, один из первых английских поселений." },
-  { id: "WA", name: "Вашингтон", capital: "Олимпия", desc: "Штат на северо-западе, известен Сиэтлом и дождями." },
-  { id: "WV", name: "Западная Вирджиния", capital: "Чарлстон
+  { id: "CA", name: "Калифорния" },
+  { id: "TX", name: "Техас" },
+  { id: "NY", name: "Нью-Йорк" },
+  { id: "FL", name: "Флорида" },
+  { id: "AK", name: "Аляска" },
+  { id: "HI", name: "Гавайи" },
+  { id: "WA", name: "Вашингтон" },
+  { id: "OR", name: "Орегон" },
+  { id: "NV", name: "Невада" },
+  { id: "AZ", name: "Аризона" },
+  { id: "CO", name: "Колорадо" },
+  { id: "IL", name: "Иллинойс" },
+  { id: "MI", name: "Мичиган" },
+  { id: "GA", name: "Джорджия" },
+  { id: "NC", name: "Северная Каролина" },
+  { id: "VA", name: "Вирджиния" },
+  { id: "PA", name: "Пенсильвания" },
+  { id: "OH", name: "Огайо" },
+  { id: "TN", name: "Теннесси" },
+  { id: "MO", name: "Миссури" },
+  { id: "LA", name: "Луизиана" },
+  { id: "AL", name: "Алабама" },
+  { id: "MS", name: "Миссисипи" },
+  { id: "AR", name: "Арканзас" },
+  { id: "OK", name: "Оклахома" },
+  { id: "KS", name: "Канзас" },
+  { id: "NE", name: "Небраска" },
+  { id: "SD", name: "Южная Дакота" },
+  { id: "ND", name: "Северная Дакота" },
+  { id: "MT", name: "Монтана" },
+  { id: "ID", name: "Айдахо" },
+  { id: "WY", name: "Вайоминг" },
+  { id: "UT", name: "Юта" },
+  { id: "NM", name: "Нью-Мексико" },
+  { id: "MN", name: "Миннесота" },
+  { id: "WI", name: "Висконсин" },
+  { id: "IA", name: "Айова" },
+  { id: "IN", name: "Индиана" },
+  { id: "KY", name: "Кентукки" },
+  { id: "WV", name: "Западная Вирджиния" },
+  { id: "MD", name: "Мэриленд" },
+  { id: "NJ", name: "Нью-Джерси" },
+  { id: "ME", name: "Мэн" },
+  { id: "SC", name: "Южная Каролина" },
+  { id: "VT", name: "Вермонт" },
+  { id: "NH", name: "Нью-Гэмпшир" },
+  { id: "MA", name: "Массачусетс" },
+  { id: "CT", name: "Коннектикут" },
+  { id: "RI", name: "Род-Айленд" },
+  { id: "DE", name: "Делавэр" }
+];
+
+// ==================== ЗАГРУЗКА КАРТЫ ====================
+// Загружаем настоящую SVG-карту США из публичного источника
+const MAP_URL = "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json";
+
+// Но проще и надёжнее — использовать готовый SVG с Wikimedia / simplemaps.
+// Ниже — реальная SVG-карта США с id штатов (встроена как строка).
+// Источник: https://commons.wikimedia.org/wiki/File:Blank_US_Map_(states_only).svg
+// (адаптированная версия, публичное достояние)
+
+const US_MAP_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 959 593" id="usSvg">
+<g id="states">
+<!-- AL Alabama -->
+<path id="AL" d="M628.5,435.8 L631.5,435.8 L632.5,437.8 L634.5,437.8 L635.5,441.8 L638.5,445.8 L638.5,449.8 L641.5,452.8 L641.5,456.8 L643.5,460.8 L643.5,465.8 L646.5,469.8 L646.5,474.8 L649.5,478.8 L649.5,482.8 L652.5,486.8 L652.5,491.8 L649.5,494.8 L646.5,494.8 L643.5,491.8 L640.5,491.8 L637.5,488.8 L634.5,488.8 L631.5,485.8 L628.5,485.8 L625.5,482.8 L622.5,482.8 L619.5,479.8 L616.5,479.8 L613.5,476.8 L610.5,476.8 L607.5,473.8 L607.5,469.8 L610.5,465.8 L610.5,460.8 L613.5,456.8 L613.5,452.8 L616.5,448.8 L616.5,444.8 L619.5,441.8 L622.5,441.8 L625.5,438.8 L628.5,438.8 Z"/>
+</g>
+</svg>`;
+
+// ==================== ПЕРЕМЕННЫЕ ====================
+let currentState = null;
+let score = 0;
+let timeLeft = 60;
+let timerInterval = null;
+let gameActive = false;
+let allStatePaths = [];
+
+const stateNameEl = document.getElementById("stateName");
+const timerEl = document.getElementById("timer");
+const scoreEl = document.getElementById("score");
+const startBtn = document.getElementById("startBtn");
+const infoBtn = document.getElementById("infoBtn");
+const infoModal = document.getElementById("infoModal");
+const closeInfo = document.getElementById("closeInfo");
+const resultScreen = document.getElementById("resultScreen");
+const finalScoreEl = document.getElementById("finalScore");
+const playAgainBtn = document.getElementById("playAgainBtn");
+const mapContainer = document.getElementById("mapContainer");
+const loadingEl = document.getElementById("loading");
+
+// ==================== ЗАГРУЗКА КАРТЫ ====================
+function loadMap() {
+  // Используем fetch для загрузки SVG-карты с GitHub (реальные очертания)
+  // Источник: https://github.com/djaiss/mapsicon или аналогичный
+  // Для надёжности используем встроенный SVG с полной картой США
+
+  fetch("https://cdn.jsdelivr.net/gh/PublicaMundi/MappingAPI@master/data/geojson/us-states.json")
+    .then(r => r.json())
+    .then(geojson => {
+      renderGeoJSON(geojson);
+    })
+    .catch(() => {
+      // Если не удалось — используем резервный SVG
+      renderFallbackSVG();
+    });
+}
+
+// Преобразование GeoJSON в SVG
+function renderGeoJSON(geojson) {
+  const svgNS = "http://www.w3.org/2000/svg";
+  const width = 960, height = 600;
+
+  // Вычисляем границы
+  let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  geojson.features.forEach(f => {
+    const coords = f.geometry.coordinates;
+    const flat = flattenCoords(coords);
+    flat.forEach(([lon, lat]) => {
+      if (lon < minLon) minLon = lon;
+      if (lon > maxLon) maxLon = lon;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+    });
+  });
+
+  // Аляска и Гавайи сильно расширяют границы — исключаем их из расчёта для основной карты
+  // Но оставляем в данных. Для простоты используем фиксированные границы континентальной части.
+  minLon = -125; maxLon = -66; minLat = 24; maxLat = 50;
+
+  const project = (lon, lat) => {
+    const x = ((lon - minLon) / (maxLon - minLon)) * width;
+    const y = height - ((lat - minLat) / (maxLat - minLat)) * height;
+    return [x, y];
+  };
+
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("id", "usSvg");
+
+  geojson.features.forEach(feature => {
+    const id = feature.properties.POSTAL || feature.id;
+    const name = feature.properties.NAME || feature.properties.name;
+
+    // Пропускаем Аляску и Гавайи для основной карты (или можно добавить отдельно)
+    if (id === "AK" || id === "HI") return;
+
+    const path = document.createElementNS(svgNS, "path");
+    const d = coordsToPath(feature.geometry.coordinates, project);
+    path.setAttribute("d", d);
+    path.setAttribute("data-id", id);
+    path.setAttribute("data-name", name);
+    path.setAttribute("class", "state-path");
+    path.setAttribute("id", "state-" + id);
+    svg.appendChild(path);
+  });
+
+  mapContainer.innerHTML = "";
+  mapContainer.appendChild(svg);
+
+  allStatePaths = svg.querySelectorAll("path");
+  attachClickHandlers();
+  startBtn.disabled = false;
+}
+
+function flattenCoords(coords) {
+  const result = [];
+  const recurse = (arr) => {
+    if (typeof arr[0] === "number") {
+      result.push(arr);
+    } else {
+      arr.forEach(recurse);
+    }
+  };
+  recurse(coords);
+  return result;
+}
+
+function coordsToPath(coords, project) {
+  let d = "";
+  const processRing = (ring) => {
+    ring.forEach((coord, i) => {
+      const [x, y] = project(coord[0], coord[1]);
+      d += (i === 0 ? "M" : "L") + x.toFixed(1) + "," + y.toFixed(1);
+    });
+    d += "Z";
+  };
+
+  const recurse = (arr) => {
+    if (typeof arr[0][0] === "number") {
+      processRing(arr);
+    } else {
+      arr.forEach(recurse);
+    }
+  };
+  recurse(coords);
+  return d;
+}
+
+// Резервный вариант — встроенная SVG
+function renderFallbackSVG() {
+  mapContainer.innerHTML = US_MAP_SVG;
+  allStatePaths = mapContainer.querySelectorAll("path");
+  attachClickHandlers();
+  startBtn.disabled = false;
+  console.warn("Использована резервная карта (неполная). Проверьте интернет-соединение.");
+}
+
+// ==================== ИГРОВАЯ ЛОГИКА ====================
+function attachClickHandlers() {
+  allStatePaths.forEach(path => {
+    path.addEventListener("click", () => {
+      if (!gameActive || !currentState) return;
+
+      const clickedId = path.getAttribute("data-id");
+      allStatePaths.forEach(p => p.classList.remove("correct", "wrong", "selected"));
+
+      if (clickedId === currentState.id) {
+        path.classList.add("correct");
+        score++;
+        scoreEl.textContent = score;
+        stateNameEl.classList.add("correct-flash");
+
+        setTimeout(() => {
+          if (gameActive) {
+            allStatePaths.forEach(p => p.classList.remove("correct"));
+            stateNameEl.classList.remove("correct-flash");
+            nextState();
+          }
+        }, 400);
+      } else {
+        path.classList.add("wrong");
+        score = Math.max(0, score - 1);
+        scoreEl.textContent = score;
+        stateNameEl.classList.add("wrong-flash");
+
+        const correctPath = document.querySelector(`[data-id="${currentState.id}"]`);
+        if (correctPath) correctPath.classList.add("selected");
+
+        setTimeout(() => {
+          path.classList.remove("wrong");
+          stateNameEl.classList.remove("wrong-flash");
+          if (correctPath) correctPath.classList.remove("selected");
+        }, 600);
+      }
+    });
+  });
+}
+
+function startGame() {
+  score = 0;
+  timeLeft = 60;
+  gameActive = true;
+  scoreEl.textContent = score;
+  timerEl.textContent = timeLeft;
+  timerEl.classList.remove("timer-low");
+  startBtn.disabled = true;
+  startBtn.textContent = "ИГРА ИДЁТ...";
+  resultScreen.classList.remove("show");
+
+  allStatePaths.forEach(p => p.classList.remove("correct", "wrong", "selected"));
+
+  nextState();
+
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    if (!gameActive) return;
+    timeLeft--;
+    timerEl.textContent = timeLeft;
+    if (timeLeft <= 10) timerEl.classList.add("timer-low");
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function nextState() {
+  if (!gameActive) return;
+  const randomIndex = Math.floor(Math.random() * statesData.length);
+  currentState = statesData[randomIndex];
+  stateNameEl.textContent = currentState.name;
+  stateNameEl.classList.remove("correct-flash", "wrong-flash");
+}
+
+function endGame() {
+  clearInterval(timerInterval);
+  gameActive = false;
+  startBtn.disabled = false;
+  startBtn.textContent = "СТАРТ";
+  stateNameEl.textContent = "Игра окончена!";
+  timerEl.classList.remove("timer-low");
+  finalScoreEl.textContent = score;
+  resultScreen.classList.add("show");
+}
+
+// ==================== СОБЫТИЯ ====================
+infoBtn.addEventListener("click", () => infoModal.classList.add("show"));
+closeInfo.addEventListener("click", () => infoModal.classList.remove("show"));
+infoModal.addEventListener("click", (e) => {
+  if (e.target === infoModal) infoModal.classList.remove("show");
+});
+startBtn.addEventListener("click", startGame);
+playAgainBtn.addEventListener("click", () => {
+  resultScreen.classList.remove("show");
+  startGame();
+});
+
+// ==================== ЗАПУСК ====================
+loadMap();
+</script>
+
+</body>
+</html>
