@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Викторина: Менталист</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Менталист — викторина</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🧠 Менталист</h1>
-      <p class="subtitle">Викторина по сериалу</p>
-    </header>
+<div class="container">
+  <header>
+    <h1>🧠 Менталист</h1>
+    <p class="subtitle">Викторина по сезонам</p>
+  </header>
 
-    <div id="start-screen" class="screen active">
-      <p>15 вопросов. Проверь, насколько хорошо ты знаешь Патрика Джейна и команду CBI.</p>
-      <button id="start-btn">Начать викторину</button>
-    </div>
-
-    <div id="quiz-screen" class="screen">
-      <div class="progress-bar">
-        <div id="progress-fill"></div>
-      </div>
-      <p class="counter">Вопрос <span id="current-q">1</span> из <span id="total-q">15</span></p>
-      <h2 id="question-text">Текст вопроса</h2>
-      <div id="answers" class="answers"></div>
-      <p id="feedback" class="feedback"></p>
-      <button id="next-btn" class="hidden">Далее →</button>
-    </div>
-
-    <div id="result-screen" class="screen">
-      <h2>Викторина завершена!</h2>
-      <p class="result-score">Твой результат: <span id="score">0</span> / <span id="max-score">15</span></p>
-      <p id="result-message"></p>
-      <button id="restart-btn">Пройти заново</button>
-    </div>
+  <div id="menu" class="screen active">
+    <p class="menu-text">Выбери сезон — в каждом по 20 вопросов.</p>
+    <div id="season-list" class="season-list"></div>
   </div>
 
-  <script src="script.js"></script>
+  <div id="quiz" class="screen">
+    <div class="top">
+      <div class="badge">Сезон <span id="season-num">1</span></div>
+      <button id="back" class="back">← Меню</button>
+    </div>
+    <div class="bar"><div id="fill"></div></div>
+    <p class="counter">Вопрос <span id="q-now">1</span> из <span id="q-total">20</span></p>
+    <h2 id="question">Текст вопроса</h2>
+    <div id="answers" class="answers"></div>
+    <p id="feedback" class="feedback"></p>
+    <button id="next" class="hidden">Далее →</button>
+  </div>
+
+  <div id="result" class="screen">
+    <h2>Сезон <span id="r-season">1</span> завершён!</h2>
+    <p class="score">Результат: <span id="r-score">0</span> / <span id="r-max">20</span></p>
+    <p id="r-msg"></p>
+    <button id="retry">Пройти заново</button>
+    <button id="to-menu">Выбрать другой сезон</button>
+  </div>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
