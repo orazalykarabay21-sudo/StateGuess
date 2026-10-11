@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Угадай штат — настоящая карта США</title>
+<title>Угадай штат США</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -15,7 +15,6 @@
     flex-direction: column;
     overflow: hidden;
   }
-
   header {
     display: flex;
     justify-content: space-between;
@@ -29,7 +28,6 @@
   .left { display: flex; flex-direction: column; align-items: flex-start; }
   .center { display: flex; flex-direction: column; align-items: center; }
   .right { display: flex; flex-direction: column; align-items: flex-end; }
-
   .title { font-size: 18px; font-weight: bold; color: #f1c40f; letter-spacing: 1px; }
   .state-name {
     font-size: 22px;
@@ -41,9 +39,7 @@
   }
   .state-name.correct-flash { color: #2ecc71; text-shadow: 0 0 15px #2ecc71; }
   .state-name.wrong-flash { color: #e74c3c; text-shadow: 0 0 15px #e74c3c; }
-
   .desc { font-size: 15px; color: #bdc3c7; }
-
   .info-btn {
     background: #3498db;
     border: none;
@@ -54,12 +50,10 @@
     font-size: 14px;
   }
   .info-btn:hover { background: #2980b9; }
-
   .stats { margin-top: 6px; font-size: 16px; display: flex; gap: 12px; }
   .stats span { color: #f1c40f; font-weight: bold; }
   .timer-low { color: #e74c3c !important; animation: pulse 0.5s infinite alternate; }
   @keyframes pulse { from { opacity: 1; } to { opacity: 0.5; } }
-
   main {
     flex: 1;
     display: flex;
@@ -69,7 +63,6 @@
     padding: 5px;
     overflow: hidden;
   }
-
   #mapContainer {
     width: 100%;
     height: 100%;
@@ -82,8 +75,6 @@
     height: 100%;
     max-height: 100%;
   }
-
-  /* Стили для штатов внутри загруженной карты */
   #mapContainer svg path {
     fill: #3d566e;
     stroke: #1e2a38;
@@ -91,22 +82,10 @@
     cursor: pointer;
     transition: fill 0.15s;
   }
-  #mapContainer svg path:hover {
-    fill: #4a6a8a;
-  }
-  #mapContainer svg path.correct {
-    fill: #2ecc71 !important;
-    filter: drop-shadow(0 0 6px #2ecc71);
-  }
-  #mapContainer svg path.wrong {
-    fill: #e74c3c !important;
-    filter: drop-shadow(0 0 6px #e74c3c);
-  }
-  #mapContainer svg path.selected {
-    fill: #f39c12 !important;
-    filter: drop-shadow(0 0 8px #f39c12);
-  }
-
+  #mapContainer svg path:hover { fill: #4a6a8a; }
+  #mapContainer svg path.correct { fill: #2ecc71 !important; filter: drop-shadow(0 0 6px #2ecc71); }
+  #mapContainer svg path.wrong { fill: #e74c3c !important; filter: drop-shadow(0 0 6px #e74c3c); }
+  #mapContainer svg path.selected { fill: #f39c12 !important; filter: drop-shadow(0 0 8px #f39c12); }
   footer {
     display: flex;
     justify-content: space-between;
@@ -130,7 +109,6 @@
   .start-btn:hover { background: #27ae60; }
   .start-btn:active { transform: scale(0.97); }
   .start-btn:disabled { background: #555; cursor: not-allowed; transform: none; }
-
   .modal {
     position: fixed;
     inset: 0;
@@ -164,7 +142,6 @@
     width: 100%;
   }
   .modal-content button:hover { background: #2980b9; }
-
   .result-screen {
     position: fixed;
     inset: 0;
@@ -192,15 +169,26 @@
     font-weight: bold;
   }
   .result-screen button:hover { background: #27ae60; }
-
   .loading {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     font-size: 20px;
     color: #f1c40f;
+    text-align: center;
   }
-
+  .loading::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 15px auto 0;
+    border: 4px solid rgba(241, 196, 15, 0.2);
+    border-top-color: #f1c40f;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
   @media (max-width: 768px) {
     .title { font-size: 14px; }
     .state-name { font-size: 18px; }
@@ -232,7 +220,7 @@
 
 <main>
   <div id="mapContainer">
-    <div class="loading" id="loading">Загрузка карты США...</div>
+    <div class="loading" id="loading">Загрузка карты США</div>
   </div>
 </main>
 
@@ -263,73 +251,57 @@
 <script>
 // ==================== ДАННЫЕ ШТАТОВ ====================
 const statesData = [
-  { id: "CA", name: "Калифорния" },
-  { id: "TX", name: "Техас" },
-  { id: "NY", name: "Нью-Йорк" },
-  { id: "FL", name: "Флорида" },
-  { id: "AK", name: "Аляска" },
-  { id: "HI", name: "Гавайи" },
-  { id: "WA", name: "Вашингтон" },
-  { id: "OR", name: "Орегон" },
-  { id: "NV", name: "Невада" },
-  { id: "AZ", name: "Аризона" },
-  { id: "CO", name: "Колорадо" },
-  { id: "IL", name: "Иллинойс" },
-  { id: "MI", name: "Мичиган" },
-  { id: "GA", name: "Джорджия" },
-  { id: "NC", name: "Северная Каролина" },
-  { id: "VA", name: "Вирджиния" },
-  { id: "PA", name: "Пенсильвания" },
-  { id: "OH", name: "Огайо" },
-  { id: "TN", name: "Теннесси" },
-  { id: "MO", name: "Миссури" },
-  { id: "LA", name: "Луизиана" },
   { id: "AL", name: "Алабама" },
-  { id: "MS", name: "Миссисипи" },
+  { id: "AK", name: "Аляска" },
+  { id: "AZ", name: "Аризона" },
   { id: "AR", name: "Арканзас" },
-  { id: "OK", name: "Оклахома" },
-  { id: "KS", name: "Канзас" },
-  { id: "NE", name: "Небраска" },
-  { id: "SD", name: "Южная Дакота" },
-  { id: "ND", name: "Северная Дакота" },
-  { id: "MT", name: "Монтана" },
-  { id: "ID", name: "Айдахо" },
-  { id: "WY", name: "Вайоминг" },
-  { id: "UT", name: "Юта" },
-  { id: "NM", name: "Нью-Мексико" },
-  { id: "MN", name: "Миннесота" },
-  { id: "WI", name: "Висконсин" },
-  { id: "IA", name: "Айова" },
-  { id: "IN", name: "Индиана" },
-  { id: "KY", name: "Кентукки" },
-  { id: "WV", name: "Западная Вирджиния" },
-  { id: "MD", name: "Мэриленд" },
-  { id: "NJ", name: "Нью-Джерси" },
-  { id: "ME", name: "Мэн" },
-  { id: "SC", name: "Южная Каролина" },
-  { id: "VT", name: "Вермонт" },
-  { id: "NH", name: "Нью-Гэмпшир" },
-  { id: "MA", name: "Массачусетс" },
+  { id: "CA", name: "Калифорния" },
+  { id: "CO", name: "Колорадо" },
   { id: "CT", name: "Коннектикут" },
+  { id: "DE", name: "Делавэр" },
+  { id: "FL", name: "Флорида" },
+  { id: "GA", name: "Джорджия" },
+  { id: "HI", name: "Гавайи" },
+  { id: "ID", name: "Айдахо" },
+  { id: "IL", name: "Иллинойс" },
+  { id: "IN", name: "Индиана" },
+  { id: "IA", name: "Айова" },
+  { id: "KS", name: "Канзас" },
+  { id: "KY", name: "Кентукки" },
+  { id: "LA", name: "Луизиана" },
+  { id: "ME", name: "Мэн" },
+  { id: "MD", name: "Мэриленд" },
+  { id: "MA", name: "Массачусетс" },
+  { id: "MI", name: "Мичиган" },
+  { id: "MN", name: "Миннесота" },
+  { id: "MS", name: "Миссисипи" },
+  { id: "MO", name: "Миссури" },
+  { id: "MT", name: "Монтана" },
+  { id: "NE", name: "Небраска" },
+  { id: "NV", name: "Невада" },
+  { id: "NH", name: "Нью-Гэмпшир" },
+  { id: "NJ", name: "Нью-Джерси" },
+  { id: "NM", name: "Нью-Мексико" },
+  { id: "NY", name: "Нью-Йорк" },
+  { id: "NC", name: "Северная Каролина" },
+  { id: "ND", name: "Северная Дакота" },
+  { id: "OH", name: "Огайо" },
+  { id: "OK", name: "Оклахома" },
+  { id: "OR", name: "Орегон" },
+  { id: "PA", name: "Пенсильвания" },
   { id: "RI", name: "Род-Айленд" },
-  { id: "DE", name: "Делавэр" }
+  { id: "SC", name: "Южная Каролина" },
+  { id: "SD", name: "Южная Дакота" },
+  { id: "TN", name: "Теннесси" },
+  { id: "TX", name: "Техас" },
+  { id: "UT", name: "Юта" },
+  { id: "VT", name: "Вермонт" },
+  { id: "VA", name: "Вирджиния" },
+  { id: "WA", name: "Вашингтон" },
+  { id: "WV", name: "Западная Вирджиния" },
+  { id: "WI", name: "Висконсин" },
+  { id: "WY", name: "Вайоминг" }
 ];
-
-// ==================== ЗАГРУЗКА КАРТЫ ====================
-// Загружаем настоящую SVG-карту США из публичного источника
-const MAP_URL = "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json";
-
-// Но проще и надёжнее — использовать готовый SVG с Wikimedia / simplemaps.
-// Ниже — реальная SVG-карта США с id штатов (встроена как строка).
-// Источник: https://commons.wikimedia.org/wiki/File:Blank_US_Map_(states_only).svg
-// (адаптированная версия, публичное достояние)
-
-const US_MAP_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 959 593" id="usSvg">
-<g id="states">
-<!-- AL Alabama -->
-<path id="AL" d="M628.5,435.8 L631.5,435.8 L632.5,437.8 L634.5,437.8 L635.5,441.8 L638.5,445.8 L638.5,449.8 L641.5,452.8 L641.5,456.8 L643.5,460.8 L643.5,465.8 L646.5,469.8 L646.5,474.8 L649.5,478.8 L649.5,482.8 L652.5,486.8 L652.5,491.8 L649.5,494.8 L646.5,494.8 L643.5,491.8 L640.5,491.8 L637.5,488.8 L634.5,488.8 L631.5,485.8 L628.5,485.8 L625.5,482.8 L622.5,482.8 L619.5,479.8 L616.5,479.8 L613.5,476.8 L610.5,476.8 L607.5,473.8 L607.5,469.8 L610.5,465.8 L610.5,460.8 L613.5,456.8 L613.5,452.8 L616.5,448.8 L616.5,444.8 L619.5,441.8 L622.5,441.8 L625.5,438.8 L628.5,438.8 Z"/>
-</g>
-</svg>`;
 
 // ==================== ПЕРЕМЕННЫЕ ====================
 let currentState = null;
@@ -350,46 +322,50 @@ const resultScreen = document.getElementById("resultScreen");
 const finalScoreEl = document.getElementById("finalScore");
 const playAgainBtn = document.getElementById("playAgainBtn");
 const mapContainer = document.getElementById("mapContainer");
-const loadingEl = document.getElementById("loading");
 
 // ==================== ЗАГРУЗКА КАРТЫ ====================
-function loadMap() {
-  // Используем fetch для загрузки SVG-карты с GitHub (реальные очертания)
-  // Источник: https://github.com/djaiss/mapsicon или аналогичный
-  // Для надёжности используем встроенный SVG с полной картой США
+// Используем надёжный источник GeoJSON с реальными границами штатов
+// Несколько источников на случай недоступности
+const MAP_SOURCES = [
+  "https://cdn.jsdelivr.net/gh/PublicaMundi/MappingAPI@master/data/geojson/us-states.json",
+  "https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json"
+];
 
-  fetch("https://cdn.jsdelivr.net/gh/PublicaMundi/MappingAPI@master/data/geojson/us-states.json")
-    .then(r => r.json())
+function loadMap() {
+  tryLoadMap(0);
+}
+
+function tryLoadMap(index) {
+  if (index >= MAP_SOURCES.length) {
+    showMapError();
+    return;
+  }
+  fetch(MAP_SOURCES[index])
+    .then(r => {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
     .then(geojson => {
       renderGeoJSON(geojson);
     })
     .catch(() => {
-      // Если не удалось — используем резервный SVG
-      renderFallbackSVG();
+      tryLoadMap(index + 1);
     });
 }
 
-// Преобразование GeoJSON в SVG
+function showMapError() {
+  mapContainer.innerHTML = '<div style="color:#e74c3c;padding:20px;text-align:center;">' +
+    '<h2>Ошибка загрузки карты</h2>' +
+    '<p>Проверьте интернет-соединение и перезагрузите страницу.</p>' +
+    '</div>';
+}
+
 function renderGeoJSON(geojson) {
   const svgNS = "http://www.w3.org/2000/svg";
   const width = 960, height = 600;
 
-  // Вычисляем границы
-  let minLon = Infinity, maxLon = -Infinity, minLat = Infinity, maxLat = -Infinity;
-  geojson.features.forEach(f => {
-    const coords = f.geometry.coordinates;
-    const flat = flattenCoords(coords);
-    flat.forEach(([lon, lat]) => {
-      if (lon < minLon) minLon = lon;
-      if (lon > maxLon) maxLon = lon;
-      if (lat < minLat) minLat = lat;
-      if (lat > maxLat) maxLat = lat;
-    });
-  });
-
-  // Аляска и Гавайи сильно расширяют границы — исключаем их из расчёта для основной карты
-  // Но оставляем в данных. Для простоты используем фиксированные границы континентальной части.
-  minLon = -125; maxLon = -66; minLat = 24; maxLat = 50;
+  // Фиксированные границы континентальной части США
+  const minLon = -125, maxLon = -66, minLat = 24, maxLat = 50;
 
   const project = (lon, lat) => {
     const x = ((lon - minLon) / (maxLon - minLon)) * width;
@@ -399,22 +375,17 @@ function renderGeoJSON(geojson) {
 
   const svg = document.createElementNS(svgNS, "svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.setAttribute("id", "usSvg");
 
   geojson.features.forEach(feature => {
     const id = feature.properties.POSTAL || feature.id;
-    const name = feature.properties.NAME || feature.properties.name;
-
-    // Пропускаем Аляску и Гавайи для основной карты (или можно добавить отдельно)
-    if (id === "AK" || id === "HI") return;
+    // Пропускаем Аляску и Гавайи (они далеко от континентальной части)
+    if (id === "AK" || id === "HI" || id === "PR") return;
 
     const path = document.createElementNS(svgNS, "path");
     const d = coordsToPath(feature.geometry.coordinates, project);
+    if (!d) return;
     path.setAttribute("d", d);
     path.setAttribute("data-id", id);
-    path.setAttribute("data-name", name);
-    path.setAttribute("class", "state-path");
-    path.setAttribute("id", "state-" + id);
     svg.appendChild(path);
   });
 
@@ -426,19 +397,6 @@ function renderGeoJSON(geojson) {
   startBtn.disabled = false;
 }
 
-function flattenCoords(coords) {
-  const result = [];
-  const recurse = (arr) => {
-    if (typeof arr[0] === "number") {
-      result.push(arr);
-    } else {
-      arr.forEach(recurse);
-    }
-  };
-  recurse(coords);
-  return result;
-}
-
 function coordsToPath(coords, project) {
   let d = "";
   const processRing = (ring) => {
@@ -448,7 +406,6 @@ function coordsToPath(coords, project) {
     });
     d += "Z";
   };
-
   const recurse = (arr) => {
     if (typeof arr[0][0] === "number") {
       processRing(arr);
@@ -458,15 +415,6 @@ function coordsToPath(coords, project) {
   };
   recurse(coords);
   return d;
-}
-
-// Резервный вариант — встроенная SVG
-function renderFallbackSVG() {
-  mapContainer.innerHTML = US_MAP_SVG;
-  allStatePaths = mapContainer.querySelectorAll("path");
-  attachClickHandlers();
-  startBtn.disabled = false;
-  console.warn("Использована резервная карта (неполная). Проверьте интернет-соединение.");
 }
 
 // ==================== ИГРОВАЯ ЛОГИКА ====================
